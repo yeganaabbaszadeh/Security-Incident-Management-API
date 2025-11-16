@@ -64,10 +64,11 @@ The main required variables:
 Two collections are provided:
 
 * Functional Tests:
-`soc-incidents-api.postman_collection`
+[soc-incidents-api.postman_collection.json](./postman/soc-incidents-api-owasp-tests.postman_collection.json)
 
 * Security (OWASP) Tests:
-`soc-incidents-api-owasp-tests.postman_collection`
+[soc-incidents-api-owasp-tests.postman_collectionjson](./postman/soc-incidents-api-owasp-tests.postman_collection.json)
+
 
 Import them into Postman to test all endpoints automatically.
 
@@ -75,7 +76,7 @@ Import them into Postman to test all endpoints automatically.
 
 A full security analysis aligned with OWASP Top 10 can be found here:
 
-📄 OWASP-Assessment.md
+📄 [OWASP-Assessment.md](./OWASP-Assessment.md) 
 
 This includes:
 * Auth tests
