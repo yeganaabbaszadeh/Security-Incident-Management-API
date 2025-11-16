@@ -76,7 +76,7 @@ Import them into Postman to test all endpoints automatically.
 
 A full security analysis aligned with OWASP Top 10 can be found here:
 
-📄 [OWASP-Assessment.md](./OWASP-Assessment.md) 
+📄 [OWASP-assessment.md](./OWASP-assessment.md) 
 
 This includes:
 * Auth tests
