@@ -352,5 +352,5 @@ Flask-Limiter
 
 ### Included Postman Collections
 
-* `soc-incidents-api.postman_collection` — Functional testing
-* `soc-incidents-api-owasp-tests.postman_collection` — Security tests
+* [soc-incidents-api.postman_collection.json](./postman/soc-incidents-api-owasp-tests.postman_collection.json) — Functional testing
+* [soc-incidents-api-owasp-tests.postman_collectionjson](./postman/soc-incidents-api-owasp-tests.postman_collection.json) — Security tests
