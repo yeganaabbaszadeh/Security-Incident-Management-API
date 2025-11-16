@@ -1,0 +1,320 @@
+{
+  "info": {
+    "name": "Secure Incident API (Flask + PostgreSQL)",
+    "_postman_id": "a1111111-b222-4333-8444-555555555555",
+    "description": "Postman collection for testing the secure Incident Management REST API (Flask, Flask-RESTful, SQLAlchemy, PostgreSQL). Includes authentication, registration, and incident CRUD operations.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (secadmin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"secadmin\",\n  \"password\": \"S0C*M4n4g3r\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let json = {};",
+                  "try {",
+                  "    json = pm.response.json();",
+                  "} catch (e) {",
+                  "    console.log('Response is not JSON');",
+                  "}",
+                  "",
+                  "if (json.access_token) {",
+                  "    pm.collectionVariables.set('token', json.access_token);",
+                  "    console.log('Stored access token to collection variable: token');",
+                  "} else {",
+                  "    console.log('No access_token field in response');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register new user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"analyst1\",\n  \"password\": \"VeryStrong!Pass123\",\n  \"password_confirm\": \"VeryStrong!Pass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let json = {};",
+                  "try {",
+                  "    json = pm.response.json();",
+                  "} catch (e) {",
+                  "    console.log('Response is not JSON');",
+                  "}",
+                  "",
+                  "if (json.access_token) {",
+                  "    pm.collectionVariables.set('token', json.access_token);",
+                  "    console.log('Stored new user token to collection variable: token');",
+                  "} else {",
+                  "    console.log('No access_token in register response');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Incidents",
+      "item": [
+        {
+          "name": "List incidents",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/incidents",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "incidents"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create incident",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Brute-force login attempt\",\n  \"description\": \"Multiple failed login attempts from same IP address\",\n  \"severity\": \"high\",\n  \"source_ip\": \"203.0.113.10\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/incidents",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "incidents"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let json = {};",
+                  "try {",
+                  "    json = pm.response.json();",
+                  "} catch (e) {",
+                  "    console.log('Response is not JSON');",
+                  "}",
+                  "",
+                  "if (json.id) {",
+                  "    pm.collectionVariables.set('last_incident_id', json.id);",
+                  "    console.log('Stored last_incident_id:', json.id);",
+                  "} else {",
+                  "    console.log('No id field in create incident response');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get incident by ID (using last_incident_id)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/incidents/{{last_incident_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "incidents",
+                "{{last_incident_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update incident status (resolved)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"resolved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/incidents/{{last_incident_id}}/status",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "incidents",
+                "{{last_incident_id}}",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List incidents (filter by severity=high)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/incidents?severity=high",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "incidents"
+              ],
+              "query": [
+                {
+                  "key": "severity",
+                  "value": "high"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "last_incident_id",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
